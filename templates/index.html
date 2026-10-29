@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevOps Simulator & Practice Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .font-mono { font-family: 'Fira Code', monospace; }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col">
+    <!-- Навигация -->
+    <header class="border-b border-slate-800 bg-slate-900/50 backdrop-blur sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="bg-indigo-600 p-2 rounded-lg text-white">
+                    <i data-lucide="terminal" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-lg tracking-wide">DevOps Hub</h1>
+                    <p class="text-xs text-slate-400">Интерактивный симулятор и тренажер</p>
+                </div>
+            </div>
+            <div class="flex items-center space-x-4">
+                <span class="bg-indigo-950 text-indigo-400 text-xs px-3 py-1 rounded-full border border-indigo-800 font-mono">Python Flask + Nginx Ready</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Основной контент -->
+    <main class="flex-1 max-w-7xl w-full mx-auto p-4 md:p-6 grid grid-cols-1 lg:grid-cols-4 gap-6">
+        <!-- Боковое меню -->
+        <div class="lg:col-span-1 space-y-2">
+            <button onclick="switchTab('dashboard')" id="btn-dashboard" class="w-full flex items-center space-x-3 px-4 py-3 rounded-xl bg-indigo-600 text-white font-medium transition shadow-lg shadow-indigo-600/20">
+                <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+                <span>Дашборд</span>
+            </button>
+            <button onclick="switchTab('cicd')" id="btn-cicd" class="w-full flex items-center space-x-3 px-4 py-3 rounded-xl bg-slate-900 text-slate-400 hover:bg-slate-800 hover:text-white font-medium transition">
+                <i data-lucide="git-merge" class="w-5 h-5"></i>
+                <span>CI/CD Пайплайн</span>
+            </button>
+            <button onclick="switchTab('docker')" id="btn-docker" class="w-full flex items-center space-x-3 px-4 py-3 rounded-xl bg-slate-900 text-slate-400 hover:bg-slate-800 hover:text-white font-medium transition">
+                <i data-lucide="box" class="w-5 h-5"></i>
+                <span>Docker Контейнеры</span>
+            </button>
+            <button onclick="switchTab('k8s')" id="btn-k8s" class="w-full flex items-center space-x-3 px-4 py-3 rounded-xl bg-slate-900 text-slate-400 hover:bg-slate-800 hover:text-white font-medium transition">
+                <i data-lucide="cpu" class="w-5 h-5"></i>
+                <span>Kubernetes Кластер</span>
+            </button>
+            <button onclick="switchTab('nginx')" id="btn-nginx" class="w-full flex items-center space-x-3 px-4 py-3 rounded-xl bg-slate-900 text-slate-400 hover:bg-slate-800 hover:text-white font-medium transition">
+                <i data-lucide="globe" class="w-5 h-5"></i>
+                <span>Nginx Настройка</span>
+            </button>
+        </div>
+
+        <!-- Рабочая зона -->
+        <div class="lg:col-span-3 space-y-6">
+            <!-- Вкладка: Дашборд -->
+            <div id="tab-dashboard" class="space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl">
+                        <div class="flex justify-between items-center text-slate-400 mb-2">
+                            <span class="text-sm font-medium">Загрузка CPU</span>
+                            <i data-lucide="cpu" class="w-5 h-5 text-indigo-400"></i>
+                        </div>
+                        <div class="text-2xl font-bold font-mono">24.5%</div>
+                        <div class="w-full bg-slate-800 h-2 rounded-full mt-3 overflow-hidden">
+                            <div class="bg-indigo-500 h-full w-1/4"></div>
+                        </div>
+                    </div>
+                    <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl">
+                        <div class="flex justify-between items-center text-slate-400 mb-2">
+                            <span class="text-sm font-medium">Использование RAM</span>
+                            <i data-lucide="server" class="w-5 h-5 text-emerald-400"></i>
+                        </div>
+                        <div class="text-2xl font-bold font-mono">4.2 / 8.0 GB</div>
+                        <div class="w-full bg-slate-800 h-2 rounded-full mt-3 overflow-hidden">
+                            <div class="bg-emerald-500 h-full w-1/2"></div>
+                        </div>
+                    </div>
+                    <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl">
+                        <div class="flex justify-between items-center text-slate-400 mb-2">
+                            <span class="text-sm font-medium">Активные Pods / Контейнеры</span>
+                            <i data-lucide="activity" class="w-5 h-5 text-amber-400"></i>
+                        </div>
+                        <div class="text-2xl font-bold font-mono">6 / 6</div>
+                        <p class="text-xs text-emerald-400 mt-2">● Все системы работают стабильно</p>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6">
+                    <h3 class="text-lg font-semibold mb-4 flex items-center space-x-2">
+                        <i data-lucide="terminal" class="w-5 h-5 text-indigo-400"></i>
+                        <span>Системный терминал логов</span>
+                    </h3>
+                    <div class="bg-slate-950 font-mono text-xs text-slate-300 p-4 rounded-xl border border-slate-800 h-48 overflow-y-auto space-y-1">
+                        <p class="text-emerald-400">[INFO] Flask server successfully initialized on port 5000.</p>
+                        <p class="text-slate-400">[INFO] Nginx reverse proxy loaded configuration rules.</p>
+                        <p class="text-indigo-400">[WATCHER] Monitoring Docker container daemon socket...</p>
+                        <p class="text-slate-300">[K8S] Node worker-01 status: Ready (Kubernetes v1.28.2)</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Вкладка: CI/CD -->
+            <div id="tab-cicd" class="hidden space-y-6">
+                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6">
+                    <h3 class="text-lg font-semibold mb-2">CI/CD Pipeline Runner</h3>
+                    <p class="text-sm text-slate-400 mb-6">Запустите сборку приложения, прогоните тесты и сделайте деплой в продакшн.</p>
+                    
+                    <button onclick="runPipeline()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-medium px-5 py-2.5 rounded-xl transition flex items-center space-x-2">
+                        <i data-lucide="play" class="w-4 h-4"></i>
+                        <span>Запустить пайплайн</span>
+                    </button>
+
+                    <div id="pipeline-status" class="mt-6 space-y-3 font-mono text-sm hidden">
+                        <div class="flex items-center space-x-3 text-slate-400" id="step-1">
+                            <div class="w-3 h-3 rounded-full bg-slate-700"></div>
+                            <span>1. Клонирование репозитория (Git Checkout)</span>
+                        </div>
+                        <div class="flex items-center space-x-3 text-slate-400" id="step-2">
+                            <div class="w-3 h-3 rounded-full bg-slate-700"></div>
+                            <span>2. Запуск юнит-тестов (PyTest / Jest)</span>
+                        </div>
+                        <div class="flex items-center space-x-3 text-slate-400" id="step-3">
+                            <div class="w-3 h-3 rounded-full bg-slate-700"></div>
+                            <span>3. Сборка Docker-образа (Docker Build)</span>
+                        </div>
+                        <div class="flex items-center space-x-3 text-slate-400" id="step-4">
+                            <div class="w-3 h-3 rounded-full bg-slate-700"></div>
+                            <span>4. Деплой на Kubernetes кластер (kubectl apply)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Вкладка: Docker -->
+            <div id="tab-docker" class="hidden space-y-6">
+                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6">
+                    <h3 class="text-lg font-semibold mb-4">Управление Docker контейнерами</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm">
+                            <thead class="border-b border-slate-800 text-slate-400">
+                                <tr>
+                                    <th class="pb-3">Контейнер</th>
+                                    <th class="pb-3">Образ</th>
+                                    <th class="pb-3">Порт</th>
+                                    <th class="pb-3">Статус</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-800 font-mono">
+                                <tr>
+                                    <td class="py-3 text-indigo-400">nginx-proxy</td>
+                                    <td>nginx:alpine</td>
+                                    <td>80:80</td>
+                                    <td><span class="text-emerald-400">● Running</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="py-3 text-indigo-400">flask-app</td>
+                                    <td>python-web:latest</td>
+                                    <td>5000:5000</td>
+                                    <td><span class="text-emerald-400">● Running</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="py-3 text-indigo-400">postgres-db</td>
+                                    <td>postgres:15</td>
+                                    <td>5432:5432</td>
+                                    <td><span class="text-emerald-400">● Running</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Вкладка: Kubernetes -->
+            <div id="tab-k8s" class="hidden space-y-6">
+                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6">
+                    <h3 class="text-lg font-semibold mb-2">Kubernetes Деплоймент</h3>
+                    <p class="text-sm text-slate-400 mb-4">Масштабирование подов (ReplicaSet)</p>
+                    <div class="flex items-center space-x-4">
+                        <button onclick="scaleReplicas(-1)" class="bg-slate-800 px-4 py-2 rounded-lg font-bold">-</button>
+                        <span id="replica-count" class="font-mono text-xl font-bold">3</span> Реплики
+                        <button onclick="scaleReplicas(1)" class="bg-slate-800 px-4 py-2 rounded-lg font-bold">+</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Вкладка: Nginx -->
+            <div id="tab-nginx" class="hidden space-y-6">
+                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4">
+                    <h3 class="text-lg font-semibold">Тренажер конфигурации Nginx (Reverse Proxy)</h3>
+                    <p class="text-sm text-slate-400">Здесь вы можете посмотреть классический конфиг Nginx, который перенаправляет трафик с порта 80 на ваше Python-приложение:</p>
+                    <pre class="bg-slate-950 p-4 rounded-xl font-mono text-xs text-indigo-300 border border-slate-800 overflow-x-auto">
+server {
+    listen 80;
+    server_name my-devops-site.local;
+
+    location / {
+        proxy_pass http://127.0.0.1:5000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+}</pre>
+                    <p class="text-xs text-emerald-400">💡 Этот конфиг вы можете использовать на своем сервере или в виртуальной машине (Ubuntu + Nginx), чтобы пользователи заходили на ваш домен и видели этот сайт!</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        lucide.createIcons();
+
+        function switchTab(tabId) {
+            ['dashboard', 'cicd', 'docker', 'k8s', 'nginx'].forEach(t => {
+                document.getElementById('tab-' + t).classList.add('hidden');
+                document.getElementById('btn-' + t).className = "w-full flex items-center space-x-3 px-4 py-3 rounded-xl bg-slate-900 text-slate-400 hover:bg-slate-800 hover:text-white font-medium transition";
+            });
+            document.getElementById('tab-' + tabId).classList.remove('hidden');
+            document.getElementById('btn-' + tabId).className = "w-full flex items-center space-x-3 px-4 py-3 rounded-xl bg-indigo-600 text-white font-medium transition shadow-lg shadow-indigo-600/20";
+        }
+
+        let replicas = 3;
+        function scaleReplicas(delta) {
+            replicas = Math.max(1, Math.min(10, replicas + delta));
+            document.getElementById('replica-count').innerText = replicas;
+        }
+
+        function runPipeline() {
+            const statusBox = document.getElementById('pipeline-status');
+            statusBox.classList.remove('hidden');
+            let steps = ['step-1', 'step-2', 'step-3', 'step-4'];
+            steps.forEach((s, index) => {
+                setTimeout(() => {
+                    let el = document.getElementById(s);
+                    el.classList.remove('text-slate-400');
+                    el.classList.add('text-emerald-400');
+                    el.querySelector('div').classList.remove('bg-slate-700');
+                    el.querySelector('div').classList.add('bg-emerald-500');
+                }, (index + 1) * 800);
+            });
+        }
+    </script>
+</body>
+</html>
